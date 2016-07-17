@@ -33,9 +33,30 @@ def my_func(var1=0, var2=0, var3=0): # this call needs these default values prov
 	return render_template("allinone.html", **context)
 
 
+
+
+########################################################
+# return the venues
+########################################################
 @app.route('/venues')
 def return_event_pages():
 	return render_template("venue_page.html")
+
+########################################################
+# Shutting down flask server
+########################################################
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+
 
 # run the app
 app.run(host='0.0.0.0')
